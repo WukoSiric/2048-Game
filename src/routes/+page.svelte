@@ -1,7 +1,29 @@
 <script lang="ts">
     import { tick } from "svelte";
     
-    let tiles: number[][] = [];
+    let tiles: number[][] = []
+    $: has_lost = false
+    enum Direction {
+        Up, Down, Left, Right
+    }
+    initialise_board()
+
+    function execute_keydown(event: KeyboardEvent) {
+        if (event.key === "ArrowUp") {
+            tiles = move(tiles, [-1, 0], Direction.Up)
+        } else if (event.key === "ArrowDown") {
+            tiles = move(tiles, [1, 0], Direction.Down)
+        } else if (event.key === "ArrowLeft") {
+            tiles = move(tiles, [0, -1], Direction.Left)
+        } else if (event.key === "ArrowRight") {
+            tiles = move(tiles, [0, 1], Direction.Right)
+        }
+
+        has_lost = check_lose(tiles)
+        if (check_win(tiles)) {
+            alert("You win!")
+        }
+    }
 
     function initialise_board() {
         for (let i = 0; i < 4; i++) {
@@ -59,8 +81,6 @@
         for (let row = 0; row < 4; row++) {
             for (let col = 0; col < 4; col++ ) {
                 let adjacent_values: number[] = get_adjacent_values(tiles, row, col)
-                console.log("Adjacent tiles for index: ",row,",",col)
-                console.log(adjacent_values)
                 if (adjacent_values.includes(tiles[row][col])) {
                     return false
                 }
@@ -98,32 +118,6 @@
             return false
         }
         return true
-    }
-
-    initialise_board()
-
-    async function execute_keydown(event: KeyboardEvent) {
-        if (event.key === "ArrowUp") {
-            tiles = move(tiles, [-1, 0], Direction.Up)
-        } else if (event.key === "ArrowDown") {
-            tiles = move(tiles, [1, 0], Direction.Down)
-        } else if (event.key === "ArrowLeft") {
-            tiles = move(tiles, [0, -1], Direction.Left)
-        } else if (event.key === "ArrowRight") {
-            tiles = move(tiles, [0, 1], Direction.Right)
-        }
-        await tick()
-
-        if (check_lose(tiles)) {
-            alert("You lose!")
-        }
-        if (check_win(tiles)) {
-            alert("You win!")
-        }
-    }
-
-    enum Direction {
-        Up, Down, Left, Right
     }
 
     let moved_tile = false
@@ -233,7 +227,15 @@
 
 <!-- HTML START -->
 <svelte:window on:keydown={execute_keydown} />
-<button on:click={() => get_adjacent_values(tiles, 0, 0)}> Check 0,0 </button>
+{#if has_lost}
+    <div class="modal">
+        <div class="modal-content">
+            <h1>You lose! </h1>
+            <button>Restart</button>
+        </div>
+    </div>
+{/if}
+
 <div class="board">
     {#each tiles as row, i}
         <div class="row">
@@ -264,6 +266,32 @@
 </div>
 
 <style> 
+    .modal {
+        transition: opacity 1s;
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0; 
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto; 
+        background-color: rgba(61, 61, 61, 0.5);
+    }
+
+    .modal-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        font-family: Inter;
+        background-color: #f4f4f4; 
+        border-radius: 20px;
+        margin: 20% auto; 
+        padding: 30px; 
+        width: 40%;
+        box-shadow: 0 5px 8px rgba(0,0,0,0.2);
+    }
+
     .board {
         position: absolute;
         top: 50%; right: 50%;

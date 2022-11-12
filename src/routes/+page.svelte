@@ -233,7 +233,7 @@
         display: flex;
         flex-direction: column;
         gap: 10px;
-        background-color: #B9ADA1;
+        background-color: #ad9d8f;
         border-radius: 5px;
         width: 400px;
         height: 400px;
@@ -249,7 +249,7 @@
     .tile {
         display: flex;
         border-radius: 5px;
-        background-color: #CAC185;
+        background-color: #bfb3a6;
         align-items: center;
         justify-content: center;
         /* transition: all 0.5s ease-in-out; */

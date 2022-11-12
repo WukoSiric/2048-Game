@@ -6,7 +6,13 @@
     enum Direction {
         Up, Down, Left, Right
     }
-    initialise_board()
+    function start_game() {
+        tiles.length = 0
+        initialise_board()
+        has_lost = false
+    }
+
+    start_game()
     // DEBUGGING ONLY
     function fill_all() {
         for (let i = 0; i < 4; i++) {
@@ -238,12 +244,12 @@
 
 <!-- HTML START -->
 <svelte:window on:keydown={execute_keydown} />
-<!-- <div class={has_lost ? 'modal' : 'hidden'}>
+<div class="modal" style="visibility: {!has_lost ? "hidden" : "visible"}">
     <div class="modal-content">
         <h1>You lose! </h1>
-        <button>Restart</button>
+        <button class="restart" on:click={start_game}>Restart</button>
     </div>
-</div> -->
+</div>
 
 <button on:click={fill_all}>Put near finish</button>
 <div class="board">
@@ -276,13 +282,9 @@
 </div>
 
 <style> 
-    /* .hidden {
-        display: none;
-        transition: 5s;
-    } */
     .modal {
-        /* transition: opacity 5s; */
-        display: none;
+        /* transition: all 2s ease-in-out; */
+        visibility: hidden;
         position: fixed;
         z-index: 1;
         left: 0; 
@@ -304,6 +306,17 @@
         padding: 30px; 
         width: 40%;
         box-shadow: 0 5px 8px rgba(0,0,0,0.2);
+    }
+
+    .restart {
+        font-family: Inter;
+        font-size: 1.2rem;
+        font-weight: 500;
+        background-color: #fc8e2f;
+        border-radius: 10px;
+        padding: 10px 20px;
+        cursor: pointer;
+        transition: all 0.2s ease-in-out;
     }
 
     .board {

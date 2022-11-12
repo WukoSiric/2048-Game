@@ -7,7 +7,15 @@
         Up, Down, Left, Right
     }
     initialise_board()
-
+    // DEBUGGING ONLY
+    function fill_all() {
+        for (let i = 0; i < 4; i++) {
+            for (let j = 0; j < 4; j++) {
+                // make tiles either 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024
+                tiles[i][j] = 2 ** (Math.floor(Math.random() * 10) + 1)
+            }
+        }
+    }
     function execute_keydown(event: KeyboardEvent) {
         if (event.key === "ArrowUp") {
             tiles = move(tiles, [-1, 0], Direction.Up)
@@ -20,6 +28,9 @@
         }
 
         has_lost = check_lose(tiles)
+        if (has_lost) {
+            console.log("You lose!")
+        }
         if (check_win(tiles)) {
             alert("You win!")
         }
@@ -227,15 +238,14 @@
 
 <!-- HTML START -->
 <svelte:window on:keydown={execute_keydown} />
-{#if has_lost}
-    <div class="modal">
-        <div class="modal-content">
-            <h1>You lose! </h1>
-            <button>Restart</button>
-        </div>
+<!-- <div class={has_lost ? 'modal' : 'hidden'}>
+    <div class="modal-content">
+        <h1>You lose! </h1>
+        <button>Restart</button>
     </div>
-{/if}
+</div> -->
 
+<button on:click={fill_all}>Put near finish</button>
 <div class="board">
     {#each tiles as row, i}
         <div class="row">
@@ -266,8 +276,12 @@
 </div>
 
 <style> 
+    /* .hidden {
+        display: none;
+        transition: 5s;
+    } */
     .modal {
-        transition: opacity 1s;
+        /* transition: opacity 5s; */
         display: none;
         position: fixed;
         z-index: 1;

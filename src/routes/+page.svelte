@@ -1,8 +1,8 @@
 <script lang="ts">
     import { tick } from "svelte";
-
-
+    
     let tiles: number[][] = [];
+
     function initialise_board() {
         for (let i = 0; i < 4; i++) {
             tiles.push([])
@@ -10,7 +10,6 @@
                 tiles[i].push(0)
             }
         }
-
         tiles = generate_tile(tiles)
         tiles = generate_tile(tiles)
     }
@@ -52,6 +51,55 @@
         return false
     }
 
+    function check_lose(tiles: number[][]): boolean {
+        if (!check_full(tiles)) {
+            return false
+        }
+
+        for (let row = 0; row < 4; row++) {
+            for (let col = 0; col < 4; col++ ) {
+                let adjacent_values: number[] = get_adjacent_values(tiles, row, col)
+                console.log("Adjacent tiles for index: ",row,",",col)
+                console.log(adjacent_values)
+                if (adjacent_values.includes(tiles[row][col])) {
+                    return false
+                }
+            }
+        }
+
+        return true
+    }
+
+    function get_adjacent_values(tiles: number[][], row: number, col: number): number[] {
+        // up down left right
+        let adjacent_values: number[] = []
+        let up_indexes: [number, number] = [row - 1, col]
+        if (check_valid_position(up_indexes[0], up_indexes[1])) {
+            adjacent_values.push(tiles[up_indexes[0]][up_indexes[1]])
+        }
+        let down_indexes: [number, number] = [row + 1, col]
+        if (check_valid_position(down_indexes[0], down_indexes[1])) {
+            adjacent_values.push(tiles[down_indexes[0]][down_indexes[1]])
+        }
+        let left_indexes: [number, number] = [row, col - 1]
+        if (check_valid_position(left_indexes[0], left_indexes[1])) {
+            adjacent_values.push(tiles[left_indexes[0]][left_indexes[1]])
+        }
+        let right_indexes: [number, number] = [row, col + 1]
+        if (check_valid_position(right_indexes[0], right_indexes[1])) {
+            adjacent_values.push(tiles[right_indexes[0]][right_indexes[1]])
+        }
+
+        return adjacent_values
+    }
+
+    function check_valid_position(row: number, col: number): boolean {
+        if (row > 3 || row < 0 || col > 3 || col < 0) {
+            return false
+        }
+        return true
+    }
+
     initialise_board()
 
     async function execute_keydown(event: KeyboardEvent) {
@@ -66,6 +114,9 @@
         }
         await tick()
 
+        if (check_lose(tiles)) {
+            alert("You lose!")
+        }
         if (check_win(tiles)) {
             alert("You win!")
         }
@@ -78,7 +129,6 @@
     let moved_tile = false
 
     function move(tiles: number[][], next_available_tile_offset: [number, number], direction: Direction): number[][] {
-        // let initial_tiles: number[][] = deep_clone_tiles(tiles)
         let i = get_start_i_index(direction);
         while (check_i_while_condition(direction, i)) {
             let j = get_start_j_index(direction)
@@ -92,13 +142,10 @@
             direction === Direction.Down ? i-- : i++
         }
 
-        // if the grid has not changed
         if (moved_tile) {
             tiles = generate_tile(tiles)
             moved_tile = false
-        } else if (!moved_tile && check_full(tiles)) {
-            alert("You lose!")
-        } 
+        }
         return tiles
     }
 
@@ -174,7 +221,6 @@
             j += 1
             if (j === 3) return null
         }
-
         return [i, j]
     }
 
@@ -185,47 +231,39 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet" defer>
 </svelte:head>
 
-
-
+<!-- HTML START -->
 <svelte:window on:keydown={execute_keydown} />
-
-<div class="main">
-    <div class="board">
-        {#each tiles as row, i}
-            <div class="row">
-                {#each row as tile, j}
-                    <div 
-                        class="tile" 
-                        class:two={tile === 2}
-                        class:four={tile === 4}
-                        class:eight={tile === 8}
-                        class:sixteen={tile === 16}
-                        class:thirty_two={tile === 32}
-                        class:sixty_four={tile === 64}
-                        class:hundred_twenty_eight={tile === 128}
-                        class:two_hundred_fifty_six={tile === 256}
-                        class:five_hundred_twelve={tile === 512}
-                        class:thousand_twenty_four={tile === 1024}
-                        class:two_thousand_forty_eight={tile === 2048}
-                    >
-                        {#if tile}
-                        <div class="number">
-                            {tile}
-                        </div>
-                        {/if}
+<button on:click={() => get_adjacent_values(tiles, 0, 0)}> Check 0,0 </button>
+<div class="board">
+    {#each tiles as row, i}
+        <div class="row">
+            {#each row as tile, j}
+                <div 
+                    class="tile" 
+                    class:two={tile === 2}
+                    class:four={tile === 4}
+                    class:eight={tile === 8}
+                    class:sixteen={tile === 16}
+                    class:thirty_two={tile === 32}
+                    class:sixty_four={tile === 64}
+                    class:hundred_twenty_eight={tile === 128}
+                    class:two_hundred_fifty_six={tile === 256}
+                    class:five_hundred_twelve={tile === 512}
+                    class:thousand_twenty_four={tile === 1024}
+                    class:two_thousand_forty_eight={tile === 2048}
+                >
+                    {#if tile}
+                    <div class="number">
+                        {tile}
                     </div>
-                {/each}
-            </div>
-        {/each} 
-    </div>
+                    {/if}
+                </div>
+            {/each}
+        </div>
+    {/each} 
 </div>
 
 <style> 
-    .main {
-        height: 100vh; 
-        width: 100vw;
-    }
-
     .board {
         position: absolute;
         top: 50%; right: 50%;

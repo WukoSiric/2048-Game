@@ -252,6 +252,8 @@
         background-color: #CAC185;
         align-items: center;
         justify-content: center;
+        /* transition: all 0.5s ease-in-out; */
+        transition: background-color 1s ease;
     }
 
     .number {

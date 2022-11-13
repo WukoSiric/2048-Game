@@ -1,4 +1,4 @@
-<script>
+<script type="ts">
     import Fa from 'svelte-fa/src/fa.svelte'
     import { faGithub } from '@fortawesome/free-brands-svg-icons'
     import { faLinkedin } from '@fortawesome/free-brands-svg-icons'
@@ -9,7 +9,6 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet" defer>
-    <link rel="stylesheet" href="../global.css" defer>
 </svelte:head>
 
 <div class="content">
@@ -29,7 +28,7 @@
 
 <style>
     a, a:visited {
-        color: black;
+        color: var(--color);
         text-decoration: none;
     }
     .content {
@@ -43,6 +42,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        padding: 15px 0px;
         max-width: 200px;
         width: 100%;
         gap: 10px;

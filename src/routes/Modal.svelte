@@ -36,6 +36,10 @@
         box-shadow: 0 5px 8px rgba(0,0,0,0.2);
     }
 
+    h1 {
+        padding: 20px;
+    }
+
     .restart {
         font-family: Inter;
         font-size: 1.2rem;

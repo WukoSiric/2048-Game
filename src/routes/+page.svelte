@@ -1,18 +1,23 @@
 <script lang="ts">
+    import Modal from './Modal.svelte';
     import { tick } from "svelte";
     
     let tiles: number[][] = []
+    let moved_tile = false
     $: has_lost = false
+    $: has_won = false
+
     enum Direction {
         Up, Down, Left, Right
     }
-    function start_game() {
+    function start_game(tiles: number[][]) {
         tiles.length = 0
         initialise_board()
         has_lost = false
+        has_won = false
     }
 
-    start_game()
+    start_game(tiles)
     // DEBUGGING ONLY
     function fill_all() {
         for (let i = 0; i < 4; i++) {
@@ -22,6 +27,7 @@
             }
         }
     }
+
     function execute_keydown(event: KeyboardEvent) {
         if (event.key === "ArrowUp") {
             tiles = move(tiles, [-1, 0], Direction.Up)
@@ -34,11 +40,12 @@
         }
 
         has_lost = check_lose(tiles)
+        has_won = check_win(tiles)
         if (has_lost) {
             console.log("You lose!")
-        }
-        if (check_win(tiles)) {
-            alert("You win!")
+        } 
+        else if (has_won) {
+            console.log("You win!")
         }
     }
 
@@ -137,7 +144,6 @@
         return true
     }
 
-    let moved_tile = false
 
     function move(tiles: number[][], next_available_tile_offset: [number, number], direction: Direction): number[][] {
         let i = get_start_i_index(direction);
@@ -234,24 +240,19 @@
         }
         return [i, j]
     }
-
 </script>
+<!-- HTML START -->
 <svelte:head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet" defer>
 </svelte:head>
-
-<!-- HTML START -->
-<svelte:window on:keydown={execute_keydown} />
-<div class="modal" style="visibility: {!has_lost ? "hidden" : "visible"}">
-    <div class="modal-content">
-        <h1>You lose! </h1>
-        <button class="restart" on:click={start_game}>Restart</button>
-    </div>
-</div>
+<svelte:window on:keydown={execute_keydown}/>
 
 <button on:click={fill_all}>Put near finish</button>
+
+<Modal message="Out of moves!" show_modal={has_lost} on:click={() => start_game(tiles)}/>
+<Modal message="Nice job!" show_modal={has_won} on:click={() => start_game(tiles)}/>
 <div class="board">
     {#each tiles as row, i}
         <div class="row">
@@ -282,42 +283,7 @@
 </div>
 
 <style> 
-    .modal {
-        /* transition: all 2s ease-in-out; */
-        visibility: hidden;
-        position: fixed;
-        z-index: 1;
-        left: 0; 
-        top: 0;
-        width: 100%;
-        height: 100%;
-        overflow: auto; 
-        background-color: rgba(61, 61, 61, 0.5);
-    }
 
-    .modal-content {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        font-family: Inter;
-        background-color: #f4f4f4; 
-        border-radius: 20px;
-        margin: 20% auto; 
-        padding: 30px; 
-        width: 40%;
-        box-shadow: 0 5px 8px rgba(0,0,0,0.2);
-    }
-
-    .restart {
-        font-family: Inter;
-        font-size: 1.2rem;
-        font-weight: 500;
-        background-color: #fc8e2f;
-        border-radius: 10px;
-        padding: 10px 20px;
-        cursor: pointer;
-        transition: all 0.2s ease-in-out;
-    }
 
     .board {
         position: absolute;

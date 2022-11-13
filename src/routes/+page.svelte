@@ -7,7 +7,6 @@
     let tiles: number[][]
     let has_lost: boolean
     let has_won: boolean
-
 </script>
 
 <!-- HTML START -->
@@ -22,7 +21,7 @@
 <!-- <button on:click={board.fill_all}>Put near finish</button> -->
 <Modal message="Out of moves!" show_modal={has_lost} on:click={() => board.start_game(tiles)}/>
 <Modal message="Nice job!" show_modal={has_won} on:click={() => board.start_game(tiles)}/>
-    
+
 <div class="content">
     <div class="header">
         <h1>2048 Clone</h1> 
@@ -31,6 +30,8 @@
     <Board bind:tiles bind:has_lost bind:has_won bind:this={board}/>
     <Footer />
 </div>
+
+<!-- STYLE -->
 <style> 
     :global(body) {
         padding: 0;
@@ -59,7 +60,6 @@
         padding: 0;
         font-family: Inter;
         gap: 50px;
-
     }
 
     .header h1 {

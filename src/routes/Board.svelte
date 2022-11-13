@@ -259,9 +259,10 @@
                     class:five_hundred_twelve={tile === 512}
                     class:thousand_twenty_four={tile === 1024}
                     class:two_thousand_forty_eight={tile === 2048}
+                    
                 >
                     {#if tile}
-                    <div class="number">
+                    <div class="number" class:small_number={tile > 512}>
                         {tile}
                     </div>
                     {/if}
@@ -307,6 +308,10 @@
         font-weight: bold;
         font-family: Inter;
     }
+
+    .small_number {
+        font-size: 35px;
+    }
         
     .two {
         background-color: #EDE0C8;
@@ -344,7 +349,7 @@
         background-color: #edc850;
     }
 
-    .thousand_twenty_four {
+    .thousand_twenty_four{
         background-color: #edc53f;
     }
 

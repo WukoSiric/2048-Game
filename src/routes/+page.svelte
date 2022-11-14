@@ -2,6 +2,7 @@
     import Modal from './Modal.svelte';
     import Board from './Board.svelte';
     import Footer from './Footer.svelte';
+    import Controls from './Controls.svelte';
 
     let board: Board
     let tiles: number[][]
@@ -25,9 +26,10 @@
 <div class="content">
     <div class="header">
         <h1>2048 Clone</h1> 
-        <p>2048 is a single-player sliding tile puzzle video game written by Italian web developer Gabriele Cirulli and published on GitHub.</p>
+        <p>Clone of the sliding tile puzzle video game by Gabriele Cirulli.</p>
     </div>
     <Board bind:tiles bind:has_lost bind:has_won bind:this={board}/>
+    <Controls/>
     <Footer --color="black" />
 </div>
 
@@ -63,9 +65,15 @@
     }
 
     .header h1 {
+        padding-top: 20px;
         display: flex;
         flex-direction: column;
         align-items: center;
+        justify-content: center;
         font-size: 4em;
+    }
+
+    p {
+        text-align: center;
     }
 </style>

@@ -279,7 +279,9 @@
         gap: 10px;
         background-color: #ad9d8f;
         border-radius: 5px;
-        width: 400px;
+        max-width: 400px;
+        width: 100%;
+        max-height: 400px;
         height: 400px;
         padding: 10px; 
     }

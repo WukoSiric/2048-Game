@@ -39,14 +39,14 @@
 <style>
     .controls {
         display: flex;
-        gap: 20px;
+        gap: 10px;
     }
     .control {
         display: flex;
         justify-content: center;
         align-items: center;
         max-width: 40px;
-        padding: 20px;
+        padding: 15px;
         width: 100%;
         border-radius: 20px;
         background-color: #f1b07d;

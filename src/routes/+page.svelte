@@ -28,7 +28,7 @@
 
 <div class="content">
     <div class="header">
-        <h1>2048 Clone</h1> 
+        <h1>2048</h1> 
         <p>Clone of the sliding tile puzzle video game by Gabriele Cirulli.</p>
     </div>
     <Board bind:tiles bind:has_lost bind:has_won bind:this={board}/>
@@ -60,28 +60,31 @@
     }
 
     .content {
-        /* position: absolute;
-        top: 50%;
-        transform: translate(50%, -55%); */
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        padding: 0;
+        padding: 15px;
         font-family: Inter;
         gap: 30px;
     }
 
-    .header h1 {
-        padding-top: 20px;
+    
+    .header {
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        font-size: 4em;
     }
 
-    p {
+    .header h1 {
+        font-size: 4em;
         text-align: center;
     }
+
+    .header p {
+        font-weight: 400;
+        text-align: center;
+    }
+
 </style>

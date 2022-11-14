@@ -42,7 +42,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        padding: 15px 0px;
+        padding: 10px 0px;
         max-width: 200px;
         width: 100%;
         gap: 10px;

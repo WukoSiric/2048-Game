@@ -49,16 +49,16 @@
     }
 
     .content {
-        position: absolute;
+        /* position: absolute;
         top: 50%;
-        transform: translate(50%, -55%);
+        transform: translate(50%, -55%); */
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
         padding: 0;
         font-family: Inter;
-        gap: 50px;
+        gap: 30px;
     }
 
     .header h1 {

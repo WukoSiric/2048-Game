@@ -1,12 +1,10 @@
 <script lang="ts">
+    import { Direction } from './types/Direction';
+    
     export let tiles: number[][] = []
     let moved_tile = false
     export let has_lost = false
     export let has_won = false
-
-    enum Direction {
-        Up, Down, Left, Right
-    }
 
     start_game(tiles)
     export function start_game(tiles: number[][]) {
@@ -25,6 +23,23 @@
             }
         }
     }
+
+    // For touch controls
+    export function move_input(direction: String) {
+        if (direction == "Up") {
+            tiles = move(tiles, [-1, 0], Direction.Up)
+        } else if (direction == "Down") {
+            tiles = move(tiles, [1, 0], Direction.Down)
+        } else if (direction == "Left") {
+            tiles = move(tiles, [0, -1], Direction.Left)
+        } else if (direction == "Right") {
+            tiles = move(tiles, [0, 1], Direction.Right)
+        }
+
+        has_lost = check_lose(tiles)
+        has_won = check_win(tiles)
+    }
+
 
     function execute_keydown(event: KeyboardEvent) {
         if (event.key === "ArrowUp") {

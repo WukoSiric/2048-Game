@@ -1,6 +1,6 @@
 <script lang="ts">
     import { Direction } from './types/Direction';
-    
+
     export let tiles: number[][] = []
     let moved_tile = false
     export let has_lost = false
@@ -24,24 +24,7 @@
         }
     }
 
-    // For touch controls
-    export function move_input(direction: String) {
-        if (direction == "Up") {
-            tiles = move(tiles, [-1, 0], Direction.Up)
-        } else if (direction == "Down") {
-            tiles = move(tiles, [1, 0], Direction.Down)
-        } else if (direction == "Left") {
-            tiles = move(tiles, [0, -1], Direction.Left)
-        } else if (direction == "Right") {
-            tiles = move(tiles, [0, 1], Direction.Right)
-        }
-
-        has_lost = check_lose(tiles)
-        has_won = check_win(tiles)
-    }
-
-
-    function execute_keydown(event: KeyboardEvent) {
+    export function execute_keydown(event: KeyboardEvent) {
         if (event.key === "ArrowUp") {
             tiles = move(tiles, [-1, 0], Direction.Up)
         } else if (event.key === "ArrowDown") {
@@ -254,9 +237,9 @@
         return [i, j]
     }
 </script>
+<svelte:window on:keydown={execute_keydown}/>
 
 <!-- HTML Start -->
-<svelte:window on:keydown={execute_keydown}/>
 <div class="board">
     {#each tiles as row, i}
         <div class="row">

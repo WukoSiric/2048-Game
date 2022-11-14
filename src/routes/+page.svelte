@@ -3,11 +3,15 @@
     import Board from './Board.svelte';
     import Footer from './Footer.svelte';
     import Controls from './Controls.svelte';
+    import { Direction } from './types/Direction';
+    import { trigger_keypress } from './Keypress/trigger_keypress'
 
     let board: Board
+    let controls: Controls
     let tiles: number[][]
     let has_lost: boolean
     let has_won: boolean
+
 </script>
 
 <!-- HTML START -->
@@ -18,7 +22,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet" defer>
 </svelte:head>
 
-<!-- DEBUGGING -->
 <!-- <button on:click={board.fill_all}>Put near finish</button> -->
 <Modal message="Out of moves!" show_modal={has_lost} on:click={() => board.start_game(tiles)}/>
 <Modal message="Nice job!" show_modal={has_won} on:click={() => board.start_game(tiles)}/>
@@ -29,7 +32,12 @@
         <p>Clone of the sliding tile puzzle video game by Gabriele Cirulli.</p>
     </div>
     <Board bind:tiles bind:has_lost bind:has_won bind:this={board}/>
-    <Controls/>
+    <Controls 
+        on:up={() => board.execute_keydown(trigger_keypress(Direction.Up))}
+        on:down={() => board.execute_keydown(trigger_keypress(Direction.Down))}
+        on:left={() => board.execute_keydown(trigger_keypress(Direction.Left))}
+        on:right={() => board.execute_keydown(trigger_keypress(Direction.Right))}
+    />
     <Footer --color="black" />
 </div>
 

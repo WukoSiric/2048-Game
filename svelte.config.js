@@ -15,7 +15,7 @@ const config = {
 		// adapter: adapter()
 		paths: {
 			// Comment out for dev comment
-			base: dev ? '' : '/2022-2048-game', 
+			base: dev ? '' : '/2048-Game', 
 		},
 		adapter: adapter({
 			// default options are shown
